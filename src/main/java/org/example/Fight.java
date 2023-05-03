@@ -6,6 +6,11 @@ package org.example;
 
 //ADD IMAGE!!!
 
+import org.example.enemyFabrics.EnemyFabric;
+import org.example.players.Human;
+import org.example.players.Player;
+import org.example.players.ShaoKahn;
+
 import javax.swing.*;
 import java.util.ArrayList;
 

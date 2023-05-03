@@ -4,6 +4,9 @@
  */
 package org.example;
 
+import org.example.enemyFabrics.EnemyFabric;
+import org.example.players.*;
+
 import javax.swing.*;
 
 /**
@@ -41,22 +44,22 @@ public class CharacterAction {
         switch (i) {
             case 0:
                 enemyy = enemyes[0];
-                icon1 = new ImageIcon("C:\\Users\\Мария\\Desktop\\Baraka.jpg");
+                icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/Baraka.png"));
                 label2.setText("Baraka (танк)");
                 break;
             case 1:
                 enemyy = enemyes[1];
-                icon1 = new ImageIcon("C:\\Users\\Мария\\Desktop\\Sub-Zero.jpg");
+                icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/SubZero.png"));
                 label2.setText("Sub-Zero (маг)");
                 break;
             case 2:
                 enemyy = enemyes[2];
-                icon1 = new ImageIcon("C:\\Users\\Мария\\Desktop\\Liu Kang.jpg");
+                icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/LiuKang.png"));
                 label2.setText("Liu Kang (боец)");
                 break;
             case 3:
                 enemyy = enemyes[3];
-                icon1 = new ImageIcon("C:\\Users\\Мария\\Desktop\\Sonya Blade.jpg");
+                icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/SonyaBlade.png"));
                 label2.setText("Sonya Blade (солдат)");
                 break;
         }
@@ -68,7 +71,7 @@ public class CharacterAction {
 
     public Player ChooseBoss(JLabel label, JLabel label2, JLabel text, JLabel label3, int i) {
         ImageIcon icon1 = null;
-        icon1 = new ImageIcon("C:\\Users\\Мария\\Desktop\\Shao Kahn.png");
+        icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/ShaoKahn.png"));
         label2.setText("Shao Kahn (босс)");
         switch (i) {
             case 2:

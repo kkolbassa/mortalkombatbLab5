@@ -7,6 +7,8 @@ package org.example;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.players.Human;
+import org.example.players.Player;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,7 +30,7 @@ public class Game {
     private ArrayList<Result> results = new ArrayList<>();
 
     public Player NewEnemy(JLabel L1, JLabel L2,
-            JLabel L3, JLabel L4, JProgressBar pr2) {
+                           JLabel L3, JLabel L4, JProgressBar pr2) {
         action.setEnemyes();
         Player enemy = action.ChooseEnemy(L1, L2, L3, L4);
         action.HP(enemy, pr2);
@@ -65,7 +67,7 @@ public class Game {
                 r2.createCell(2).setCellValue(results.get(i).getPoints());
             }
         }
-        File f = new File("C:\\Users\\Мария\\Desktop\\Results.xlsx");
+        File f = new File("./Results.xlsx");
         book.write(new FileOutputStream(f));
         book.close();
     }
@@ -75,7 +77,7 @@ public class Game {
     }
 
     public void ReadFromExcel() throws IOException{
-        XSSFWorkbook book = new XSSFWorkbook("C:\\Users\\Мария\\Desktop\\Results.xlsx");
+        XSSFWorkbook book = new XSSFWorkbook("./Results.xlsx");
         XSSFSheet sh = book.getSheetAt(0);
         for (int i=1; i<=sh.getLastRowNum();i++) {
             results.add(new Result(sh.getRow(i).getCell(1).getStringCellValue(),(int)sh.getRow(i).getCell(2).getNumericCellValue()));

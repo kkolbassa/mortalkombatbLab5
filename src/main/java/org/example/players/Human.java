@@ -2,13 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.example;
+package org.example.players;
+
+import org.example.players.Player;
 
 /**
  *
  * @author Мария
  */
-public class Human extends Player{
+public class Human extends Player {
     
 
     private int points;
