@@ -8,7 +8,6 @@ import org.example.players.Human;
 import org.example.players.Player;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,14 +33,18 @@ public class JFrames extends javax.swing.JFrame {
         initComponents();
         try {
             game.ReadFromExcel();
-        } catch (IOException ex) {
-            Logger.getLogger(JFrames.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog (null, ex.getMessage(), "Oшибка", JOptionPane.ERROR_MESSAGE);
         }
         game.WriteToTable(jTableResult);
         
         buttonGroupItems.add(jRadioButtonSmallItem);
         buttonGroupItems.add(jRadioButtonBigItem);
         buttonGroupItems.add(jRadioButtonCrossRelive);
+
+        buttonGroupFighter.add(jRadioButtonJhin);
+        buttonGroupFighter.add(jRadioButtonKarina);
+        buttonGroupFighter.add(jRadioButtonRammus);
         
         items[0]=new Items("Малое зелье лечение",0);
         items[1]=new Items("Большое зелье лечение",0);
@@ -125,11 +128,32 @@ public class JFrames extends javax.swing.JFrame {
         jButtonStartGame = new javax.swing.JButton();
         jButtonShowResult = new javax.swing.JButton();
         jLabelImageGame = new javax.swing.JLabel();
+        jDialogChoseLocation = new javax.swing.JDialog();
+        jPanelChoseLocation = new javax.swing.JPanel();
+        jLabelCountLocation = new javax.swing.JLabel();
+        jTextFieldCountLocation = new javax.swing.JTextField();
+        jButtonChoseLocation = new javax.swing.JButton();
+        jLabelLocation = new javax.swing.JLabel();
+        jLabelLocationNumber = new javax.swing.JLabel();
+        jLabelNextLocation = new javax.swing.JLabel();
+        jDialogChosePlayer = new javax.swing.JDialog();
+        jPanelChosePlayer = new javax.swing.JPanel();
+        jLabelChooseFighter = new javax.swing.JLabel();
+        jLabelImageFighter2 = new javax.swing.JLabel();
+        jLabellImageFighter3 = new javax.swing.JLabel();
+        jLabellImageFighter1 = new javax.swing.JLabel();
+        jRadioButtonJhin = new javax.swing.JRadioButton();
+        jRadioButtonKarina = new javax.swing.JRadioButton();
+        jRadioButtonRammus = new javax.swing.JRadioButton();
+        jButtonFighter = new javax.swing.JButton();
+        buttonGroupFighter = new javax.swing.ButtonGroup();
+
 
         jPanelGameplay.setBackground(new java.awt.Color(255, 255, 255));
 
-
-        jLabelImageHuman.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/Katarina.png"))); // NOI18N
+        this.jRadioButtonJhin.setActionCommand("Jhin");
+        this.jRadioButtonKarina.setActionCommand("Karina");
+        this.jRadioButtonRammus.setActionCommand("Rammus");
 
         jButtonAtack.setBackground(new java.awt.Color(255, 0, 0));
         jButtonAtack.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
@@ -240,7 +264,7 @@ public class JFrames extends javax.swing.JFrame {
 
         jLabelHumanName.setFont(new java.awt.Font("Comic Sans MS", 2, 14)); // NOI18N
         jLabelHumanName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelHumanName.setText("Kitana ");
+        jLabelHumanName.setText("");
 
         jLabelStun.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
         jLabelStun.setForeground(new java.awt.Color(0, 0, 0));
@@ -250,6 +274,15 @@ public class JFrames extends javax.swing.JFrame {
         jButtonItems.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
         jButtonItems.setForeground(new java.awt.Color(0, 0, 0));
         jButtonItems.setText("Предметы");
+        jLabelLocation.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelLocation.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabelLocation.setForeground(new java.awt.Color(128, 92, 31));
+        jLabelLocation.setText("location");
+
+        jLabelLocationNumber.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelLocationNumber.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        jLabelLocationNumber.setForeground(new java.awt.Color(113, 90, 16));
+        jLabelLocationNumber.setText("1");
         jButtonItems.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGetItems(evt);
@@ -259,11 +292,15 @@ public class JFrames extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanelGameplay);
         jPanelGameplay.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabelEnemyScaleHealth)
-                .addGap(18, 18, 18)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(31, 31, 31)
+                                                .addComponent(jLabelEnemyScaleHealth))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(41, 41, 41)
+                                                .addComponent(jLabelLocation)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(262, 262, 262)
@@ -308,7 +345,9 @@ public class JFrames extends javax.swing.JFrame {
                                             .addComponent(jLabelStun, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                    .addGap(43, 43, 43)
+                                    .addComponent(jLabelLocationNumber)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonItems, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(46, 46, 46)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -380,6 +419,8 @@ public class JFrames extends javax.swing.JFrame {
                         .addComponent(jLabelImageEnemy, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabelNameBoss, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabelLocationNumber)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -402,7 +443,8 @@ public class JFrames extends javax.swing.JFrame {
                             .addComponent(jButtonItems, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jButtonAtack, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                                .addComponent(jButtonDefence, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)))
+                                .addComponent(jButtonDefence, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
+                                .addComponent(jLabelLocation))
                         .addGap(14, 14, 14))))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
@@ -433,6 +475,13 @@ public class JFrames extends javax.swing.JFrame {
         jLabelWinner.setText("jLabelWinner");
         jLabelWinner.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        jLabelNextLocation.setBackground(new java.awt.Color(204, 204, 204));
+        jLabelNextLocation.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        jLabelNextLocation.setForeground(new java.awt.Color(204, 0, 0));
+        jLabelNextLocation.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelNextLocation.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabelNextLocation.setText("");
+
         jButtonWinContinue.setBackground(new java.awt.Color(114, 218, 142));
         jButtonWinContinue.setFont(new java.awt.Font("Comic Sans MS", 0, 24)); // NOI18N
         jButtonWinContinue.setForeground(new java.awt.Color(0, 0, 0));
@@ -452,7 +501,10 @@ public class JFrames extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(208, 208, 208)
                         .addComponent(jButtonWinContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(76, 76, 76)
+                                .addComponent(jLabelNextLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addComponent(jLabelWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(106, Short.MAX_VALUE))
@@ -460,7 +512,9 @@ public class JFrames extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(89, 89, 89)
+                    .addContainerGap(232, Short.MAX_VALUE)
+                    .addComponent(jLabelNextLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(89, 89, 89)
                 .addComponent(jLabelWinner, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                 .addComponent(jButtonWinContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -852,10 +906,147 @@ public class JFrames extends javax.swing.JFrame {
             jDialog6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelCantUseItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+        jLabelCountLocation.setText("Выберите количество локаций");
+
+        jButtonChoseLocation.setText("Начать");
+        jButtonChoseLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChoseLocationActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelChoseLocationLayout = new javax.swing.GroupLayout(jPanelChoseLocation);
+        jPanelChoseLocation.setLayout(jPanelChoseLocationLayout);
+        jPanelChoseLocationLayout.setHorizontalGroup(
+                jPanelChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelChoseLocationLayout.createSequentialGroup()
+                                .addGroup(jPanelChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanelChoseLocationLayout.createSequentialGroup()
+                                                .addGap(109, 109, 109)
+                                                .addGroup(jPanelChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jTextFieldCountLocation)
+                                                        .addComponent(jLabelCountLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGroup(jPanelChoseLocationLayout.createSequentialGroup()
+                                                .addGap(155, 155, 155)
+                                                .addComponent(jButtonChoseLocation)))
+                                .addContainerGap(111, Short.MAX_VALUE))
+        );
+        jPanelChoseLocationLayout.setVerticalGroup(
+                jPanelChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelChoseLocationLayout.createSequentialGroup()
+                                .addGap(37, 37, 37)
+                                .addComponent(jLabelCountLocation)
+                                .addGap(35, 35, 35)
+                                .addComponent(jTextFieldCountLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)
+                                .addComponent(jButtonChoseLocation)
+                                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDialogChoseLocationLayout = new javax.swing.GroupLayout(jDialogChoseLocation.getContentPane());
+        jDialogChoseLocation.getContentPane().setLayout(jDialogChoseLocationLayout);
+        jDialogChoseLocationLayout.setHorizontalGroup(
+                jDialogChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 400, Short.MAX_VALUE)
+                        .addGroup(jDialogChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanelChoseLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jDialogChoseLocationLayout.setVerticalGroup(
+                jDialogChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 206, Short.MAX_VALUE)
+                        .addGroup(jDialogChoseLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanelChoseLocation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+
+        jLabelChooseFighter.setBackground(new java.awt.Color(204, 204, 204));
+        jLabelChooseFighter.setFont(new java.awt.Font("Comic Sans MS", 1, 42)); // NOI18N
+        jLabelChooseFighter.setForeground(new java.awt.Color(204, 0, 0));
+        jLabelChooseFighter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelChooseFighter.setText("Choose your fighter");
+        jLabelChooseFighter.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jRadioButtonJhin.setText("Jhin");
+
+        jRadioButtonKarina.setText("Karina");
+
+        jRadioButtonRammus.setText("Rammus");
+
+        jButtonFighter.setText("Выбрать");
+        jButtonFighter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFighterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelChosePlayerLayout = new javax.swing.GroupLayout(jPanelChosePlayer);
+        jPanelChosePlayer.setLayout(jPanelChosePlayerLayout);
+        jPanelChosePlayerLayout.setHorizontalGroup(
+                jPanelChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelChosePlayerLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabellImageFighter1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(jLabelImageFighter2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(56, 56, 56)
+                                .addComponent(jLabellImageFighter3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37))
+                        .addGroup(jPanelChosePlayerLayout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(jLabelChooseFighter, javax.swing.GroupLayout.PREFERRED_SIZE, 851, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(54, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelChosePlayerLayout.createSequentialGroup()
+                                .addGap(159, 159, 159)
+                                .addComponent(jRadioButtonJhin)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanelChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButtonFighter)
+                                        .addComponent(jRadioButtonKarina))
+                                .addGap(205, 205, 205)
+                                .addComponent(jRadioButtonRammus)
+                                .addGap(119, 119, 119))
+        );
+        jPanelChosePlayerLayout.setVerticalGroup(
+                jPanelChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelChosePlayerLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabelChooseFighter, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88)
+                                .addGroup(jPanelChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabelImageFighter2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabellImageFighter3, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabellImageFighter1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jRadioButtonJhin)
+                                        .addComponent(jRadioButtonRammus)
+                                        .addComponent(jRadioButtonKarina))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                                .addComponent(jButtonFighter)
+                                .addGap(23, 23, 23))
+        );
+
+        javax.swing.GroupLayout jDialogChosePlayerLayout = new javax.swing.GroupLayout(jDialogChosePlayer.getContentPane());
+        jDialogChosePlayer.getContentPane().setLayout(jDialogChosePlayerLayout);
+        jDialogChosePlayerLayout.setHorizontalGroup(
+                jDialogChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 936, Short.MAX_VALUE)
+                        .addGroup(jDialogChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanelChosePlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jDialogChosePlayerLayout.setVerticalGroup(
+                jDialogChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 574, Short.MAX_VALUE)
+                        .addGroup(jDialogChosePlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanelChosePlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanelInitial.setBackground(new java.awt.Color(255, 255, 255));
+        jLabellImageFighter1.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/Jhin.png")));
+        jLabelImageFighter2.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/Karina.png")));
+        jLabellImageFighter3.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/Rammus.png")));
 
         jLabelGameName.setFont(new java.awt.Font("Comic Sans MS", 2, 24)); // NOI18N
         jLabelGameName.setForeground(new java.awt.Color(204, 204, 0));
@@ -936,34 +1127,15 @@ public class JFrames extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonStartGame(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jFrame.setVisible(rootPaneCheckingEnabled);
-        jFrame.setSize(1000,700);
-        
-        human = game.NewHuman(jProgressBarHumanDamage);
-        
-        enemy = game.NewEnemy(jLabelImageEnemy, jLabelNameBoss, jLabelEnemyDamageValue, jLabelEnemyScaleHealth, jProgressBarEnemyDamage);
-        
-        game.change.NewRoundTexts(human, enemy, jProgressBarHumanDamage, jProgressBarEnemyDamage,
-                jLabelPointsValue, jLabelExperienceScaleValue, jLabelLevel, jLabelLevelEnemy, jLabelHumanScaleHealth, jLabelEnemyScaleHealth, jLabelHumanDamageValue,
-                jLabelTurn, jLabelResult, game.fight.i, items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive);
-        
-        /*game.action.setEnemyes();
-        enemy = game.action.ChooseEnemy(jLabelImageEnemy, jLabelNameBoss, jLabelEnemyDamageValue, jLabelEnemyScaleHealth);
-                //a.ChooseEmemy(human, jLabelImageEnemy, jProgressBarEnemyDamage, jLabelNameBoss, jLabelEnemyDamageValue, jLabelEnemyScaleHealth);
-        
-        //Fight f = new Fight();
-        
-        game.action.HP(human, jProgressBarHumanDamage);
-        game.action.HP(enemy, jProgressBarEnemyDamage);
-        jProgressBarEnemyDamage.setMaximum(enemy.getMaxHealth());*/
-        
+        jDialogChoseLocation.setVisible(true);
+        jDialogChoseLocation.setBounds(100, 100, 400, 250);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButtonFight(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         game.fight.Hit( human, enemy, 1, jLabelEnemyScaleHealth, jLabelHumanScaleHealth, jDialogWin,
                 jLabelWinner, game.action, jProgressBarHumanDamage, jProgressBarEnemyDamage, jDialogFinishName,
                 jDialogWinTop, jFrame, game.getResults(), jLabelYouWin, jLabelWinYours,
-                jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive);
+                jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive,jLabelNextLocation);
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -971,7 +1143,7 @@ public class JFrames extends javax.swing.JFrame {
         game.fight.Hit( human, enemy, 0, jLabelEnemyScaleHealth, jLabelHumanScaleHealth, jDialogWin,
                 jLabelWinner, game.action, jProgressBarHumanDamage, jProgressBarEnemyDamage, jDialogFinishName,
                 jDialogWinTop, jFrame, game.getResults(), jLabelYouWin, jLabelWinYours,
-                jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive);
+                jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive, jLabelNextLocation);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButtonWinContinue(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -982,7 +1154,8 @@ public class JFrames extends javax.swing.JFrame {
         
         game.change.NewRoundTexts(human, enemy, jProgressBarHumanDamage, jProgressBarEnemyDamage,
                 jLabelPointsValue, jLabelExperienceScaleValue, jLabelLevel, jLabelLevelEnemy, jLabelHumanScaleHealth, jLabelEnemyScaleHealth, jLabelHumanDamageValue,
-                jLabelTurn, jLabelResult, game.fight.i, items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive);
+                jLabelTurn, jLabelResult, game.fight.i, items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive,jLabelLocationNumber, game.fight.location,
+                jLabelHumanName, jLabelImageHuman, human.getName());
 
         jDialogWin.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -1034,6 +1207,50 @@ public class JFrames extends javax.swing.JFrame {
     private void jButtonCantUseItemOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jDialogCantUseItem.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+    private void jButtonChoseLocationActionPerformed(java.awt.event.ActionEvent evt) {
+        try{
+            game.location = Integer.parseInt(jTextFieldCountLocation.getText());
+            if(game.location<=0)throw new Exception();
+
+            jDialogChoseLocation.dispose();
+
+            jDialogChosePlayer.setVisible(true);
+            jDialogChosePlayer.setBounds(0, 0, 940, 588);
+
+        }catch (Exception e){
+            JOptionPane.showMessageDialog (null, "Ошибка ввода локаций", "Oшибка", JOptionPane.ERROR_MESSAGE);
+            jTextFieldCountLocation.setText("");
+        }
+
+    }
+    private void jButtonFighterActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            String name = buttonGroupFighter.getSelection().getActionCommand();
+            if(name==null)throw new Exception("Боец не выбран");
+
+            jDialogChosePlayer.dispose();
+
+            jFrame.setVisible(rootPaneCheckingEnabled);
+            jFrame.setSize(1000,700);
+
+            human = game.NewHuman(jProgressBarHumanDamage, game.location, name);
+
+            enemy = game.NewEnemy(jLabelImageEnemy, jLabelNameBoss, jLabelEnemyDamageValue, jLabelEnemyScaleHealth, jProgressBarEnemyDamage);
+
+            game.change.NewRoundTexts(human, enemy, jProgressBarHumanDamage, jProgressBarEnemyDamage,
+                    jLabelPointsValue, jLabelExperienceScaleValue, jLabelLevel, jLabelLevelEnemy, jLabelHumanScaleHealth, jLabelEnemyScaleHealth, jLabelHumanDamageValue,
+                    jLabelTurn, jLabelResult, game.fight.i, items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive, jLabelLocationNumber, game.fight.location,
+                    jLabelHumanName, jLabelImageHuman, name);
+
+            jTextFieldCountLocation.setText("");
+
+        }catch (Exception e){
+            JOptionPane.showMessageDialog (null, e.getMessage(), "Oшибка", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+
 
     /**
      * @param args the command line arguments
@@ -1107,5 +1324,26 @@ public class JFrames extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JTable jTableResult;
     private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JTextField jTextFieldCountLocation;
+    private javax.swing.JPanel jPanelChoseLocation;
+    private javax.swing.JLabel jLabelCountLocation;
+    private javax.swing.JDialog jDialogChoseLocation;
+    private javax.swing.JButton jButtonChoseLocation;
+    private javax.swing.JLabel jLabelLocation;
+    private javax.swing.JLabel jLabelLocationNumber;
+    private javax.swing.JLabel jLabelNextLocation;
+    private javax.swing.ButtonGroup buttonGroupFighter;
+    private javax.swing.JButton jButtonFighter;
+    private javax.swing.JDialog jDialogChosePlayer;
+    private javax.swing.JPanel jPanelChosePlayer;
+    private javax.swing.JRadioButton jRadioButtonJhin;
+    private javax.swing.JRadioButton jRadioButtonKarina;
+    private javax.swing.JRadioButton jRadioButtonRammus;
+    private javax.swing.JLabel jLabellImageFighter1;
+    private javax.swing.JLabel jLabellImageFighter3;
+    private javax.swing.JLabel jLabelChooseFighter;
+    private javax.swing.JLabel jLabelImageFighter2;
+
+
     // End of variables declaration//GEN-END:variables
 }

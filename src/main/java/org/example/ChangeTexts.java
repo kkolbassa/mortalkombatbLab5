@@ -20,7 +20,8 @@ public class ChangeTexts {
     public void NewRoundTexts(Player human, Player enemy, JProgressBar pr1,
                               JProgressBar pr2, JLabel label, JLabel label2, JLabel label3,
                               JLabel label4, JLabel label5, JLabel label6, JLabel label7, JLabel label8, JLabel label9,
-                              int i, Items[] items, JRadioButton rb1, JRadioButton rb2, JRadioButton rb3) {
+                              int i, Items[] items, JRadioButton rb1, JRadioButton rb2, JRadioButton rb3,
+                              JLabel jLabelCountLocation, int location, JLabel jLabelHumanName, JLabel jLabelImageHuman, String name)  {
         label.setText(Integer.toString(((Human) human).getPoints()));
         label2.setText(Integer.toString(((Human) human).getExperience()) + "/" + ((Human) human).getNextExperience());
         label3.setText(Integer.toString(human.getLevel()) + " level");
@@ -39,6 +40,9 @@ public class ChangeTexts {
         rb3.setText(items[2].getName()+", "+items[2].getCount()+" шт");*/
         BagText(items, rb1, rb2, rb3);
         label9.setText("");
+        jLabelCountLocation.setText(String.valueOf(location));
+        jLabelHumanName.setText(human.getName());
+        jLabelImageHuman.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/"+name +".png")));
     }
 
     public void RoundTexts(Player human, Player enemy, JLabel label, JLabel label2, int i, JLabel label3) {

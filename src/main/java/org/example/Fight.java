@@ -4,8 +4,6 @@
  */
 package org.example;
 
-//ADD IMAGE!!!
-
 import org.example.enemyFabrics.EnemyFabric;
 import org.example.players.Human;
 import org.example.players.Player;
@@ -28,6 +26,8 @@ public class Fight {
     int k = -1;
     int stun = 0;
     double v = 0.0;
+    int location = 1;
+    int countRoundLocation = 2;
 
     public void Move(Player p1, Player p2, JLabel l, JLabel l2) {
         if (stun == 1) {
@@ -70,15 +70,38 @@ public class Fight {
                 stun = 0;
                 l2.setText(p2.getName() + " attacked");
                 break;
+            case "20":
+                p1.setHealth((int) ((p1.getMaxHealth()- p1.getHealth()) * 0.5));
+                l2.setText(p1.getName() + " regenerated health");
+                break;
+            case "21":
+                p1.setHealth(-(int) (p2.getDamage() * 2));
+                l2.setText(p2.getName() + " counterattacked regen");
+                break;
+            case "12":
+                p2.setHealth(-(int) (p1.getDamage() * 2));
+                l2.setText(p1.getName() + " counterattacked regen");
+                break;
+            case "02":
+                p2.setHealth((int) ((p2.getMaxHealth()- p2.getHealth()) * 0.5));
+                l2.setText(p2.getName() + " regenerated health");
+                break;
+            case "-12":
+                l.setText(p1.getName() + " was stunned");
+                stun = 0;
+                p2.setHealth((int) ((p2.getMaxHealth()- p2.getHealth()) * 0.5));
+                l2.setText(p2.getName() + " regenerated health");
+                break;
         }
+
     }
 
     public void Hit(Player human, Player enemy, int a, JLabel label,
-            JLabel label2, JDialog dialog, JLabel label3, CharacterAction action,
-            JProgressBar pr1, JProgressBar pr2, JDialog dialog1,
-            JDialog dialog2, JFrame frame, ArrayList<Result> results,
-            JLabel label4, JLabel label5, JLabel label6, JLabel label7,
-            JLabel label8, Items[] items, JRadioButton rb) {
+                    JLabel label2, JDialog dialog, JLabel label3, CharacterAction action,
+                    JProgressBar pr1, JProgressBar pr2, JDialog dialog1,
+                    JDialog dialog2, JFrame frame, ArrayList<Result> results,
+                    JLabel label4, JLabel label5, JLabel label6, JLabel label7,
+                    JLabel label8, Items[] items, JRadioButton rb, JLabel jLabelNextLocation) {
         label7.setText("");
         human.setAttack(a);
 
@@ -88,7 +111,12 @@ public class Fight {
             kind_attack = action.ChooseBehavior(enemy, action);
             k = 0;
         }
-        enemy.setAttack(kind_attack[k]);
+
+        if (enemy instanceof ShaoKahn&&(Math.random()<0.1)){
+            enemy.setAttack(2);
+            k--;
+        }else enemy.setAttack(kind_attack[k]);
+
         if (i % 2 == 1) {
             Move(human, enemy, label7, label8);
         } else {
@@ -98,6 +126,7 @@ public class Fight {
         change.RoundTexts(human, enemy, label, label2, i, label6);
         action.HP(human, pr1);
         action.HP(enemy, pr2);
+
         if (human.getHealth() <= 0 & items[2].getCount() > 0) {
             human.setNewHealth((int) (human.getMaxHealth() * 0.05));
             items[2].setCount(-1);
@@ -107,20 +136,17 @@ public class Fight {
             label7.setText("Вы воскресли");
         }
         if (human.getHealth() <= 0 | enemy.getHealth() <= 0) {
-            if (((Human) human).getWin() == 11) {
-                EndFinalRound(((Human) human), action, results, dialog1, dialog2,
-                        frame, label4, label5);
-            } else {
-                EndRound(human, enemy, dialog, label3, action, items);
-            }
+                EndRound(human, enemy, dialog, label3, action, items,dialog1, dialog2,
+                        frame, results,  label4, label5,jLabelNextLocation);
         }
     }
 
     public void EndRound(Player human, Player enemy, JDialog dialog, JLabel label,
-            CharacterAction action, Items[] items) {
+            CharacterAction action, Items[] items, JDialog dialog1,
+                         JDialog dialog2, JFrame frame, ArrayList<Result> results,JLabel label4, JLabel label5, JLabel jLabelNextLocation) {
 
-        dialog.setVisible(true);
-        dialog.setBounds(300, 150, 700, 600);
+        ((Human) human).setLocalRound();
+        jLabelNextLocation.setText("");
         if (human.getHealth() > 0) {
             label.setText("You win");
             ((Human) human).setWin();
@@ -135,11 +161,28 @@ public class Fight {
         } else {
             label.setText(enemy.getName() + " win");
         }
+        if(((Human) human).getLocalRound() == countRoundLocation){
+            location++;
+            setCountRoundLocation(human.getLevel());
+            ((Human) human).setLocalRoundNull();
+            jLabelNextLocation.setText("Вы перешли на следующую локацию");
+        }
+        if(location==1+((Human) human).getLocation()){
+            EndFinalRound(((Human) human), action, results, dialog1, dialog2,
+                    frame, label4, label5);
+        }else{
+            dialog.setVisible(true);
+            dialog.setBounds(300, 150, 700, 600);
+        }
 
         i = 1;
         k = -1;
         kind_attack = ResetAttack();
 
+    }
+
+    private void setCountRoundLocation(int level) {
+        this.countRoundLocation = level + 2;
     }
 
     public void EndFinalRound(Human human, CharacterAction action,
@@ -186,7 +229,8 @@ public class Fight {
             JProgressBar pr2, JLabel label2, JLabel text, JLabel label3, CharacterAction action) {
 
         Player enemy1 = null;
-        if (((Human) human).getWin() == 6 | ((Human) human).getWin() == 11) {
+        //if (((Human) human).getWin() == 6 | ((Human) human).getWin() == 11) {
+        if (((Human) human).getLocalRound() == countRoundLocation-1) {
             enemy1 = action.ChooseBoss(label, label2, text, label3, human.getLevel());
         } else {
             enemy1 = action.ChooseEnemy(label, label2, text, label3);

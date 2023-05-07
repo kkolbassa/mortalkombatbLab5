@@ -5,6 +5,7 @@
 package org.example;
 
 import org.example.enemyFabrics.EnemyFabric;
+import org.example.humanFabrics.HumanFabric;
 import org.example.players.*;
 
 import javax.swing.*;
@@ -15,15 +16,15 @@ import javax.swing.*;
  */
 public class CharacterAction {
 
-    private final int experience_for_next_level[] = {40, 90, 180, 260, 410, 1000};
+   // private final int experience_for_next_level[] = {40, 90, 180, 260, 410, 1000};
 
     private final int kind_fight[][] = {{1, 0}, {1, 1, 0}, {0, 1, 0}, {1, 1, 1, 1}};
 
-    private Player enemyes[] = new Player[6];
+    private Player enemyes[] = new Player[5];
 
     EnemyFabric fabric = new EnemyFabric();
 
-    private Player enemyy = null;
+    private Player enemy = null;
 
     public void setEnemyes() {
         enemyes[0] = fabric.create(0, 0);
@@ -31,7 +32,6 @@ public class CharacterAction {
         enemyes[2] = fabric.create(2, 0);
         enemyes[3] = fabric.create(3, 0);
         enemyes[4] = fabric.create(4, 0);
-        enemyes[5] = fabric.create(4, 0);
     }
 
     public Player[] getEnemyes() {
@@ -43,48 +43,49 @@ public class CharacterAction {
         ImageIcon icon1 = null;
         switch (i) {
             case 0:
-                enemyy = enemyes[0];
+                enemy = enemyes[0];
                 icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/Baraka.png"));
                 label2.setText("Baraka (танк)");
                 break;
             case 1:
-                enemyy = enemyes[1];
+                enemy = enemyes[1];
                 icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/SubZero.png"));
                 label2.setText("Sub-Zero (маг)");
                 break;
             case 2:
-                enemyy = enemyes[2];
+                enemy = enemyes[2];
                 icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/LiuKang.png"));
                 label2.setText("Liu Kang (боец)");
                 break;
             case 3:
-                enemyy = enemyes[3];
+                enemy = enemyes[3];
                 icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/SonyaBlade.png"));
                 label2.setText("Sonya Blade (солдат)");
                 break;
         }
         label.setIcon(icon1);
-        text.setText(Integer.toString(enemyy.getDamage()));
-        label3.setText(Integer.toString(enemyy.getHealth()) + "/" + Integer.toString(enemyy.getMaxHealth()));
-        return enemyy;
+        text.setText(Integer.toString(enemy.getDamage()));
+        label3.setText(Integer.toString(enemy.getHealth()) + "/" + Integer.toString(enemy.getMaxHealth()));
+        return enemy;
     }
 
     public Player ChooseBoss(JLabel label, JLabel label2, JLabel text, JLabel label3, int i) {
         ImageIcon icon1 = null;
         icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/ShaoKahn.png"));
         label2.setText("Shao Kahn (босс)");
-        switch (i) {
+/*        switch (i) {
             case 2:
-                enemyy = enemyes[4];
+                enemy = enemyes[4];
                 break;
             case 4:
-                enemyy = enemyes[5];
+                enemy = enemyes[5];
                 break;
-        }
+        }*/
+        enemy = enemyes[4];
         label.setIcon(icon1);
-        text.setText(Integer.toString(enemyy.getDamage()));
-        label3.setText(Integer.toString(enemyy.getHealth()) + "/" + Integer.toString(enemyy.getMaxHealth()));
-        return enemyy;
+        text.setText(Integer.toString(enemy.getDamage()));
+        label3.setText(Integer.toString(enemy.getHealth()) + "/" + Integer.toString(enemy.getMaxHealth()));
+        return enemy;
     }
 
     public int[] EnemyBehavior(int k1, int k2, int k3, int k4, double i) {
@@ -135,6 +136,10 @@ public class CharacterAction {
     }
 
     public void AddPoints(Human human, Player[] enemyes) {
+        human.setExperience(20 + human.getLevel()*5);
+        human.setPoints(25 + human.getLevel()*10 + human.getHealth() / 4);
+        checkLevel(human, enemyes);
+        /*
         switch (human.getLevel()) {
             case 0:
                 human.setExperience(20);
@@ -156,8 +161,8 @@ public class CharacterAction {
                 human.setExperience(50);
                 human.setPoints(55 + human.getHealth() / 4);
                 break;
-        }
-        for (int i = 0; i < 5; i++) {
+        }*/
+        /*for (int i = 0; i < 5; i++) {
             if (experience_for_next_level[i] == human.getExperience()) {
                 human.setLevel();
                 human.setNextExperience(experience_for_next_level[i + 1]);
@@ -166,28 +171,34 @@ public class CharacterAction {
                     NewHealthEnemy(enemyes[j], human);
                 }
             }
-        }
+        }*/
+
     }
 
     public void AddPointsBoss(Human human, Player[] enemyes) {
-        switch (human.getLevel()) {
-            case 2:
-                human.setExperience(30);
-                human.setPoints(45 + human.getHealth() / 2);
-                break;
-            case 4:
-                human.setExperience(50);
-                human.setPoints(65 + human.getHealth() / 2);
-                break;
-        }
-        for (int i = 0; i < 5; i++) {
-            if (experience_for_next_level[i] == human.getExperience()) {
-                human.setLevel();
-                human.setNextExperience(experience_for_next_level[i + 1]);
-                NewHealthHuman(human);
-                for (int j = 0; j < 4; j++) {
-                    NewHealthEnemy(enemyes[j], human);
-                }
+        human.setExperience(30 + 20*human.getLevel());
+        human.setPoints(45 +10*human.getLevel()+ human.getHealth() / 2);
+        checkLevel(human, enemyes);
+    }
+    public void checkLevel(Human human, Player[] enemyes){
+        if (human.getExperience() >= human.getNextExperience() ) {
+            human.setLevel();
+            human.setNextExperience(human.getNextExperience() * (human.getLevel() + 1));
+
+            Object[] options = {"Max Health",
+                    "Damage"};
+            int chose = JOptionPane.showOptionDialog(null,
+                    "Какие характеристики улучшить?",
+                    "Level up!",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+
+            NewHealthHuman(human, chose);
+            for (int j = 0; j < enemyes.length; j++) {
+                NewHealthEnemy(enemyes[j], human);
             }
         }
     }
@@ -205,32 +216,22 @@ public class CharacterAction {
         }
     }
 
-    public void NewHealthHuman(Human human) {
-        int hp = 0;
-        int damage = 0;
-        switch (human.getLevel()) {
+    public void NewHealthHuman(Human human, int chose) {
+
+        switch (chose) {
+            case 0:
+                human.setMaxHealth(25 + human.getLevel()*5);
+                break;
             case 1:
-                hp = 25;
-                damage = 3;
-                break;
-            case 2:
-                hp = 30;
-                damage = 3;
-                break;
-            case 3:
-                hp = 30;
-                damage = 4;
-                break;
-            case 4:
-                hp = 40;
-                damage = 6;
-                break;
+                human.setDamage(3+human.getLevel());
         }
-        human.setMaxHealth(hp);
-        human.setDamage(damage);
     }
 
     public void NewHealthEnemy(Player enemy, Human human) {
+        enemy.setMaxHealth((int) enemy.getMaxHealth() * (34 - human.getLevel()*2) / 100);
+        enemy.setDamage((int) enemy.getDamage() * (26 - human.getLevel()) / 100);
+        enemy.setLevel();
+        /*
         int hp = 0;
         int damage = 0;
         switch (human.getLevel()) {
@@ -253,7 +254,7 @@ public class CharacterAction {
         }
         enemy.setMaxHealth((int) enemy.getMaxHealth() * hp / 100);
         enemy.setDamage((int) enemy.getDamage() * damage / 100);
-        enemy.setLevel();
+        enemy.setLevel();*/
     }
 
     public void UseItem(Player human, Items[] items, String name, JDialog dialog, JDialog dialog1) {
