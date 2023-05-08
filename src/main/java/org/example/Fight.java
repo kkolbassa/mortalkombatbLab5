@@ -21,7 +21,6 @@ public class Fight {
     ChangeTexts change = new ChangeTexts();
     int kind_attack[] = {0};
     int experiences[] = {40, 90, 180, 260, 410};
-    EnemyFabric fabric = new EnemyFabric();
     int i = 1;
     int k = -1;
     int stun = 0;
@@ -33,6 +32,7 @@ public class Fight {
         if (stun == 1) {
             p1.setAttack(-1);
         }
+
         switch (Integer.toString(p1.getAttack()) + Integer.toString(p2.getAttack())) {
             case "10":
                 v = Math.random();
@@ -41,7 +41,7 @@ public class Fight {
                     l2.setText("Your block is broken");
 
                 } else {
-                    p1.setHealth(-(int) (p2.getDamage() * 0.5));
+                    p2.setHealth(-(int) (p1.getDamage() * 0.5));
                     l2.setText(p2.getName() + " counterattacked");
                 }
                 break;
@@ -104,11 +104,12 @@ public class Fight {
                     JLabel label8, Items[] items, JRadioButton rb, JLabel jLabelNextLocation) {
         label7.setText("");
         human.setAttack(a);
+        human.addStrategy(a);
 
         if (k < kind_attack.length - 1) {
             k++;
         } else {
-            kind_attack = action.ChooseBehavior(enemy, action);
+            kind_attack = action.ChooseBehavior(enemy, action, human.getStrategy(), i);
             k = 0;
         }
 
@@ -146,6 +147,7 @@ public class Fight {
                          JDialog dialog2, JFrame frame, ArrayList<Result> results,JLabel label4, JLabel label5, JLabel jLabelNextLocation) {
 
         ((Human) human).setLocalRound();
+        human.setNullStrategy();
         jLabelNextLocation.setText("");
         if (human.getHealth() > 0) {
             label.setText("You win");

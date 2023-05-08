@@ -5,10 +5,12 @@
 package org.example;
 
 import org.example.enemyFabrics.EnemyFabric;
-import org.example.humanFabrics.HumanFabric;
 import org.example.players.*;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -25,6 +27,7 @@ public class CharacterAction {
     EnemyFabric fabric = new EnemyFabric();
 
     private Player enemy = null;
+    private final Random random = new Random();
 
     public void setEnemyes() {
         enemyes[0] = fabric.create(0, 0);
@@ -104,8 +107,7 @@ public class CharacterAction {
         }
         return arr;
     }
-
-    public int[] ChooseBehavior(Player enemy, CharacterAction action) {
+    public int[] ChooseBasicBehavior(Player enemy, CharacterAction action) {
         int arr[] = null;
         double i = Math.random();
         if (enemy instanceof Baraka) {
@@ -124,6 +126,35 @@ public class CharacterAction {
             arr = action.EnemyBehavior(10, 45, 0, 45, i);
         }
         return arr;
+    }
+
+    public int[] ChooseBehavior(Player enemy, CharacterAction action, ArrayList<Integer> strategy, int step) {
+        if(step<2){
+            return ChooseBasicBehavior(enemy, action);
+        }else return ChooseOptimalBehavior(enemy, strategy, step);
+    }
+
+    private int[] ChooseOptimalBehavior(Player enemy, ArrayList<Integer> strategyPlayer, int step) {
+        int index = -1;
+        List<Integer> strategy = strategyPlayer.subList(strategyPlayer.size()-2,strategyPlayer.size());
+        if(step%2==1){
+            if(enemy instanceof SubZero){ index = 1;}
+            else if(strategy.get(0)!=strategy.get(1)&&random.nextInt(2)==0){
+                index = strategy.get(0) == 0 ? 3:0;
+            }else index = random.nextInt(2) == 0 ? 1: 2;
+        }else{
+            if (strategy.get(0)==0){
+                if(enemy instanceof SubZero) index = 1;
+                else index = random.nextInt(2) == 0 ? 1: 2;
+            }else {
+                if (enemy instanceof SonyaBlade) index = random.nextInt(2) == 0 ? 0 : 1;
+                else {
+                    if(random.nextBoolean())index = random.nextInt(2) == 0 ? 1 : 3;
+                    else index = random.nextInt(2) == 0 ? 0 : 3;
+                }
+            }
+        }
+        return kind_fight[index];
     }
 
     public void HP(Player player, JProgressBar progress) {

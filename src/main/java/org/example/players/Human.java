@@ -4,6 +4,8 @@
  */
 package org.example.players;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Мария
@@ -34,8 +36,6 @@ public class Human extends Player {
     public int getLocation() {
         return location;
     }
-
-
     public void setLocation(int location) {
         this.location = location;
     }
@@ -79,14 +79,10 @@ public class Human extends Player {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-    /*@Override
-    public String getName(){
-        return "You";
-    }*/
+
 
     
 }

@@ -4,6 +4,8 @@
  */
 package org.example.players;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Мария
@@ -12,16 +14,18 @@ public class Player {
     
     private int level;
     private int health;
-    private int maxhealth;
+    private int maxHealth;
     private int damage;
     private int attack;
+    private ArrayList<Integer> strategy;
     
     public Player(int level, int health, int damage, int attack){
         this.level=level;
         this.health=health;
         this.damage=damage;
         this.attack=attack;
-        this.maxhealth=health;
+        this.maxHealth =health;
+        this.strategy = new ArrayList<>();
     }
    
     public void setLevel(){
@@ -39,8 +43,19 @@ public class Player {
     public void setAttack(int a){
         this.attack=a;
     }
+    public void addStrategy(int a){
+        strategy.add(a);
+    }
+    public void setNullStrategy(){
+        strategy.clear();
+    }
+
+    public ArrayList<Integer> getStrategy() {
+        return strategy;
+    }
+
     public void setMaxHealth(int h){
-        this.maxhealth+=h;
+        this.maxHealth +=h;
     }
     
     public int getLevel(){
@@ -56,7 +71,7 @@ public class Player {
         return this.attack;
     }
     public int getMaxHealth(){
-        return this.maxhealth;
+        return this.maxHealth;
     }
     
     public String getName(){
