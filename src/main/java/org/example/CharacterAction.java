@@ -13,13 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
+ * Класс для описания действий вражеского персонажа и изменения характеристик игроков
  * @author Мария
  */
 public class CharacterAction {
-
-   // private final int experience_for_next_level[] = {40, 90, 180, 260, 410, 1000};
-
     private final int kind_fight[][] = {{1, 0}, {1, 1, 0}, {0, 1, 0}, {1, 1, 1, 1}};
 
     private Player enemyes[] = new Player[5];
@@ -29,6 +26,9 @@ public class CharacterAction {
     private Player enemy = null;
     private final Random random = new Random();
 
+    /**
+     * Создание вражеских персонажей
+     */
     public void setEnemyes() {
         enemyes[0] = fabric.create(0, 0);
         enemyes[1] = fabric.create(1, 0);
@@ -41,6 +41,10 @@ public class CharacterAction {
         return this.enemyes;
     }
 
+    /**
+     * Выбор вражеского персонажа
+     * @return вражеский песронаж
+     */
     public Player ChooseEnemy(JLabel label, JLabel label2, JLabel text, JLabel label3) {
         int i = (int) (Math.random() * 4);
         ImageIcon icon1 = null;
@@ -72,18 +76,14 @@ public class CharacterAction {
         return enemy;
     }
 
-    public Player ChooseBoss(JLabel label, JLabel label2, JLabel text, JLabel label3, int i) {
+    /**
+     * Выбор босса
+     * @return вражеский персонаж
+     */
+    public Player ChooseBoss(JLabel label, JLabel label2, JLabel text, JLabel label3) {
         ImageIcon icon1 = null;
         icon1 = new ImageIcon(getClass().getClassLoader().getResource("images/ShaoKahn.png"));
         label2.setText("Shao Kahn (босс)");
-/*        switch (i) {
-            case 2:
-                enemy = enemyes[4];
-                break;
-            case 4:
-                enemy = enemyes[5];
-                break;
-        }*/
         enemy = enemyes[4];
         label.setIcon(icon1);
         text.setText(Integer.toString(enemy.getDamage()));
@@ -91,6 +91,10 @@ public class CharacterAction {
         return enemy;
     }
 
+    /**
+     * Выбор базовой стратегии врага в зависимости от его вида
+     * @return стратегия врага
+     */
     public int[] EnemyBehavior(int k1, int k2, int k3, int k4, double i) {
         int arr[] = null;
         if (i < k1 * 0.01) {
@@ -107,6 +111,12 @@ public class CharacterAction {
         }
         return arr;
     }
+
+    /**
+     * Описание выбора базовой стратегии врага в зависимости от его вида
+     * @param enemy
+     * @param action
+     */
     public int[] ChooseBasicBehavior(Player enemy, CharacterAction action) {
         int arr[] = null;
         double i = Math.random();
@@ -128,14 +138,23 @@ public class CharacterAction {
         return arr;
     }
 
+    /**
+     * Описание выбора стратегии врага
+     * @param strategy ходы игрока
+     * @param step чей ход
+     */
     public int[] ChooseBehavior(Player enemy, CharacterAction action, ArrayList<Integer> strategy, int step) {
         if(step<2){
             return ChooseBasicBehavior(enemy, action);
         }else return ChooseOptimalBehavior(enemy, strategy, step);
     }
 
+    /**
+     * Выбор оптимальной стратегии врага
+     * @return стратегия врага
+     */
     private int[] ChooseOptimalBehavior(Player enemy, ArrayList<Integer> strategyPlayer, int step) {
-        int index = -1;
+        int index;
         List<Integer> strategy = strategyPlayer.subList(strategyPlayer.size()-2,strategyPlayer.size());
         if(step%2==1){
             if(enemy instanceof SubZero){ index = 1;}
@@ -157,6 +176,10 @@ public class CharacterAction {
         return kind_fight[index];
     }
 
+    /**
+     * Установление полосы здоровья игрока в Jframe
+     * @param player игрок
+     */
     public void HP(Player player, JProgressBar progress) {
 
         if (player.getHealth() >= 0) {
@@ -166,51 +189,34 @@ public class CharacterAction {
         }
     }
 
+    /**
+     * Добавление очков и опыта за победу над врагом
+     * @param human игрок
+     * @param enemyes враги
+     */
     public void AddPoints(Human human, Player[] enemyes) {
         human.setExperience(20 + human.getLevel()*5);
         human.setPoints(25 + human.getLevel()*10 + human.getHealth() / 4);
         checkLevel(human, enemyes);
-        /*
-        switch (human.getLevel()) {
-            case 0:
-                human.setExperience(20);
-                human.setPoints(25 + human.getHealth() / 4);
-                break;
-            case 1:
-                human.setExperience(25);
-                human.setPoints(30 + human.getHealth() / 4);
-                break;
-            case 2:
-                human.setExperience(30);
-                human.setPoints(35 + human.getHealth() / 4);
-                break;
-            case 3:
-                human.setExperience(40);
-                human.setPoints(45 + human.getHealth() / 4);
-                break;
-            case 4:
-                human.setExperience(50);
-                human.setPoints(55 + human.getHealth() / 4);
-                break;
-        }*/
-        /*for (int i = 0; i < 5; i++) {
-            if (experience_for_next_level[i] == human.getExperience()) {
-                human.setLevel();
-                human.setNextExperience(experience_for_next_level[i + 1]);
-                NewHealthHuman(human);
-                for (int j = 0; j < 4; j++) {
-                    NewHealthEnemy(enemyes[j], human);
-                }
-            }
-        }*/
-
     }
 
+    /**
+     *
+     * Добавление очков и опыта за победу над боссом
+     * @param human игрок
+     * @param enemyes враги
+     */
     public void AddPointsBoss(Human human, Player[] enemyes) {
         human.setExperience(30 + 20*human.getLevel());
         human.setPoints(45 +10*human.getLevel()+ human.getHealth() / 2);
         checkLevel(human, enemyes);
     }
+
+    /**
+     * Проверка перехода игрока на новый уровень
+     * @param human
+     * @param enemyes
+     */
     public void checkLevel(Human human, Player[] enemyes){
         if (human.getExperience() >= human.getNextExperience() ) {
             human.setLevel();
@@ -234,6 +240,9 @@ public class CharacterAction {
         }
     }
 
+    /**
+     * Добавление предметов в сумку
+     */
     public void AddItems(int k1, int k2, int k3, Items[] items) {
         double i = Math.random();
         if (i < k1 * 0.01) {
@@ -247,6 +256,11 @@ public class CharacterAction {
         }
     }
 
+    /**
+     * Результат выбора улучшения характеристики
+     * @param human игрок
+     * @param chose выбранная характеристика
+     */
     public void NewHealthHuman(Human human, int chose) {
 
         switch (chose) {
@@ -258,36 +272,18 @@ public class CharacterAction {
         }
     }
 
+    /**
+     * Увеличение характеристик врага при переходе на новый уровень
+     */
     public void NewHealthEnemy(Player enemy, Human human) {
         enemy.setMaxHealth((int) enemy.getMaxHealth() * (34 - human.getLevel()*2) / 100);
         enemy.setDamage((int) enemy.getDamage() * (26 - human.getLevel()) / 100);
         enemy.setLevel();
-        /*
-        int hp = 0;
-        int damage = 0;
-        switch (human.getLevel()) {
-            case 1:
-                hp = 32;
-                damage = 25;
-                break;
-            case 2:
-                hp = 30;
-                damage = 20;
-                break;
-            case 3:
-                hp = 23;
-                damage = 24;
-                break;
-            case 4:
-                hp = 25;
-                damage = 26;
-                break;
-        }
-        enemy.setMaxHealth((int) enemy.getMaxHealth() * hp / 100);
-        enemy.setDamage((int) enemy.getDamage() * damage / 100);
-        enemy.setLevel();*/
     }
 
+    /**
+     * Выбор какой предмет использовать
+     */
     public void UseItem(Player human, Items[] items, String name, JDialog dialog, JDialog dialog1) {
         switch (name) {
             case "jRadioButton1":

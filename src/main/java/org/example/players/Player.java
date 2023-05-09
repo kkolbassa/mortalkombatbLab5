@@ -7,7 +7,7 @@ package org.example.players;
 import java.util.ArrayList;
 
 /**
- *
+ * Класс для описания игрока
  * @author Мария
  */
 public class Player {

@@ -7,7 +7,7 @@ package org.example.players;
 import org.example.players.Player;
 
 /**
- *
+ * Класс для описания определенного вражеского персонажа
  * @author Мария
  */
 public class SubZero extends Player {

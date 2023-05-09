@@ -10,13 +10,15 @@ import org.example.players.Player;
 import javax.swing.*;
 
 /**
- *
+ * Класс для изменения текста в окне игры JFrame
  * @author Мария
  */
 public class ChangeTexts {
 
 
-
+    /**
+     * Установление текста для нового раунда
+     */
     public void NewRoundTexts(Player human, Player enemy, JProgressBar pr1,
                               JProgressBar pr2, JLabel label, JLabel label2, JLabel label3,
                               JLabel label4, JLabel label5, JLabel label6, JLabel label7, JLabel label8, JLabel label9,
@@ -45,6 +47,9 @@ public class ChangeTexts {
         jLabelImageHuman.setIcon(new ImageIcon(getClass().getClassLoader().getResource("images/"+name +".png")));
     }
 
+    /**
+     * Установление текста после хода игрока
+     */
     public void RoundTexts(Player human, Player enemy, JLabel label, JLabel label2, int i, JLabel label3) {
         if (enemy.getHealth() >= 0) {
             label.setText(Integer.toString(enemy.getHealth()) + "/" + Integer.toString(enemy.getMaxHealth()));
@@ -72,7 +77,10 @@ public class ChangeTexts {
             label.setText("Победа не на вашей стороне");
         }
     }
-    
+
+    /**
+     * Установление текста сумки с предметами
+     */
     public void BagText( Items[] items, JRadioButton rb1, JRadioButton rb2, JRadioButton rb3){
         rb1.setText(items[0].getName()+", "+items[0].getCount()+" шт");
         rb2.setText(items[1].getName()+", "+items[1].getCount()+" шт");

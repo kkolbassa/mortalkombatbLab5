@@ -9,7 +9,7 @@ import org.example.players.Player;
 import org.example.players.SonyaBlade;
 
 /**
- *
+ * Класс для создания  определенного вражеского персонажа
  * @author Мария
  */
 public class SonyaBladeFabric implements EnemyFabricInterface {

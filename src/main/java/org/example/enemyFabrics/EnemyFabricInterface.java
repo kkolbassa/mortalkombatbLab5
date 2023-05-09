@@ -7,9 +7,9 @@ package org.example.enemyFabrics;
 import org.example.players.Player;
 
 /**
- *
+ * Интерфейс для создания вражеского пресонажа
  * @author Мария
  */
 public interface EnemyFabricInterface {
-    public Player create(int i);
+    Player create(int i);
 }

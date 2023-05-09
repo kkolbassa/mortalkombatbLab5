@@ -4,10 +4,8 @@
  */
 package org.example.players;
 
-import java.util.ArrayList;
-
 /**
- *
+ * Класс для описания персонажа игрока
  * @author Мария
  */
 public class Human extends Player {

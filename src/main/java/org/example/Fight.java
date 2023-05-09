@@ -4,7 +4,7 @@
  */
 package org.example;
 
-import org.example.enemyFabrics.EnemyFabric;
+import org.example.excelManipulation.Result;
 import org.example.players.Human;
 import org.example.players.Player;
 import org.example.players.ShaoKahn;
@@ -13,14 +13,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- *
+ * Класс для описания возможных действий персонажей
  * @author Мария
  */
 public class Fight {
 
     ChangeTexts change = new ChangeTexts();
     int kind_attack[] = {0};
-    int experiences[] = {40, 90, 180, 260, 410};
     int i = 1;
     int k = -1;
     int stun = 0;
@@ -28,6 +27,9 @@ public class Fight {
     int location = 1;
     int countRoundLocation = 2;
 
+    /**
+     * Описание результата от выбранных действий игрока и врага
+     */
     public void Move(Player p1, Player p2, JLabel l, JLabel l2) {
         if (stun == 1) {
             p1.setAttack(-1);
@@ -96,6 +98,12 @@ public class Fight {
 
     }
 
+    /**
+     * Описание действий при выборе игроком атаки/защиты
+     * @param human игрок
+     * @param enemy вражеский персонаж
+     * @param a выбор игрока атаковать или защищаться
+     */
     public void Hit(Player human, Player enemy, int a, JLabel label,
                     JLabel label2, JDialog dialog, JLabel label3, CharacterAction action,
                     JProgressBar pr1, JProgressBar pr2, JDialog dialog1,
@@ -142,6 +150,11 @@ public class Fight {
         }
     }
 
+    /**
+     * Описание действий при завершении раунда
+     * @param human игрок
+     * @param enemy вражеский персонаж
+     */
     public void EndRound(Player human, Player enemy, JDialog dialog, JLabel label,
             CharacterAction action, Items[] items, JDialog dialog1,
                          JDialog dialog2, JFrame frame, ArrayList<Result> results,JLabel label4, JLabel label5, JLabel jLabelNextLocation) {
@@ -183,10 +196,18 @@ public class Fight {
 
     }
 
+    /**
+     * Рассчитывает кол-во раундов для локации в зависимости от уровня игрока
+     * @param level уровень игрока
+     */
     private void setCountRoundLocation(int level) {
         this.countRoundLocation = level + 2;
     }
 
+    /**
+     * Описание действий при завершении финального раунда
+     * @param human игрок
+     */
     public void EndFinalRound(Human human, CharacterAction action,
             ArrayList<Result> results, JDialog dialog1, JDialog dialog2, JFrame frame,
             JLabel label1, JLabel label2) {
@@ -227,13 +248,17 @@ public class Fight {
         return a;
     }
 
+    /**
+     * Описание действий для нового раунда
+     * @param human игрок
+     * @return враг для нового раунда
+     */
     public Player NewRound(Player human, JLabel label, JProgressBar pr1,
             JProgressBar pr2, JLabel label2, JLabel text, JLabel label3, CharacterAction action) {
 
         Player enemy1 = null;
-        //if (((Human) human).getWin() == 6 | ((Human) human).getWin() == 11) {
         if (((Human) human).getLocalRound() == countRoundLocation-1) {
-            enemy1 = action.ChooseBoss(label, label2, text, label3, human.getLevel());
+            enemy1 = action.ChooseBoss(label, label2, text, label3);
         } else {
             enemy1 = action.ChooseEnemy(label, label2, text, label3);
         }

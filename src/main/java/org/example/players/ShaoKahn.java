@@ -4,10 +4,9 @@
  */
 package org.example.players;
 
-import org.example.players.Player;
 
 /**
- *
+ * Класс для описания определенного вражеского персонажа(босса)
  * @author Мария
  */
 public class ShaoKahn extends Player {

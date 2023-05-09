@@ -10,7 +10,7 @@ import org.example.players.LiuKang;
 import org.example.players.Player;
 
 /**
- *
+ * Класс для создания  определенного вражеского персонажа
  * @author Мария
  */
 public class LiuKangFabric implements EnemyFabricInterface {

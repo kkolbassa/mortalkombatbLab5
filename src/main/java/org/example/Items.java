@@ -5,7 +5,7 @@
 package org.example;
 
 /**
- *
+ * Класс для описания сумки с предметами
  * @author Мария
  */
 public class Items {

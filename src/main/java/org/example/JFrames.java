@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 
 
 /**
- *
+ * Класс для работы с графическим пользовательским интерфейсом
+ * @see javax.swing.JFrame
  * @author Мария
  */
 public class JFrames extends javax.swing.JFrame {
-    
     Game game = new Game();
     Human human = null;
     Player enemy = null;
@@ -27,16 +27,16 @@ public class JFrames extends javax.swing.JFrame {
 
     
     /**
-     * Creates new form JFrame
+     * Создание нового JFrame
      */
     public JFrames() {
         initComponents();
         try {
-            game.ReadFromExcel();
+            game.xlsxManipulation.ReadFromExcel();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog (null, ex.getMessage(), "Oшибка", JOptionPane.ERROR_MESSAGE);
         }
-        game.WriteToTable(jTableResult);
+        game.xlsxManipulation.WriteToTable(jTableResult);
         
         buttonGroupItems.add(jRadioButtonSmallItem);
         buttonGroupItems.add(jRadioButtonBigItem);
@@ -1125,27 +1125,35 @@ public class JFrames extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Кнопка запуска игры
+     */
     private void jButtonStartGame(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         jDialogChoseLocation.setVisible(true);
         jDialogChoseLocation.setBounds(100, 100, 400, 250);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    /**
+     * Кнопка атаки противника
+     */
     private void jButtonFight(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         game.fight.Hit( human, enemy, 1, jLabelEnemyScaleHealth, jLabelHumanScaleHealth, jDialogWin,
                 jLabelWinner, game.action, jProgressBarHumanDamage, jProgressBarEnemyDamage, jDialogFinishName,
-                jDialogWinTop, jFrame, game.getResults(), jLabelYouWin, jLabelWinYours,
+                jDialogWinTop, jFrame, game.xlsxManipulation.getResults(), jLabelYouWin, jLabelWinYours,
                 jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive,jLabelNextLocation);
         
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    /**
+     * Кнопка защиты противника
+     */
     private void jButtonDefence(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         game.fight.Hit( human, enemy, 0, jLabelEnemyScaleHealth, jLabelHumanScaleHealth, jDialogWin,
                 jLabelWinner, game.action, jProgressBarHumanDamage, jProgressBarEnemyDamage, jDialogFinishName,
-                jDialogWinTop, jFrame, game.getResults(), jLabelYouWin, jLabelWinYours,
+                jDialogWinTop, jFrame, game.xlsxManipulation.getResults(), jLabelYouWin, jLabelWinYours,
                 jLabelTurn, jLabelStun, jLabelResult, items, jRadioButtonCrossRelive, jLabelNextLocation);
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    /**
+     * Кнопка продолжения игры после завершения раунда
+     */
     private void jButtonWinContinue(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
 
         enemy=game.fight.NewRound(human, jLabelImageEnemy, jProgressBarHumanDamage, jProgressBarEnemyDamage,
@@ -1159,30 +1167,40 @@ public class JFrames extends javax.swing.JFrame {
 
         jDialogWin.dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
-
+    /**
+     * Кнопка завершения игры
+     */
     private void jButtonFinishGame(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            game.EndGameTop(human, jTextFieldName, jTableResult);
+            game.xlsxManipulation.EndGameTop(human, jTextFieldName, jTableResult);
         } catch (IOException ex) {
             Logger.getLogger(JFrames.class.getName()).log(Level.SEVERE, null, ex);
         }
         jDialogFinishName.dispose();
         jTextFieldName.setText("");
     }//GEN-LAST:event_jButton6ActionPerformed
-
+    /**
+     * Кнопка закрытия таблицы рейтинга
+     */
     private void jButtonCloseTable(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         jDialogTableRecords.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
-
+    /**
+     * Кнопка открытия таблицы с рейтингом
+     */
     private void jButtonSetResults(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jDialogTableRecords.setVisible(true);
         jDialogTableRecords.setBounds(100, 100, 580, 450);
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    /**
+     * Кнопка завершения игры при попадании в топ 10 игроков
+     */
     private void jButtonWinFinish(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         jDialogWinTop.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
-
+    /**
+     * Кнопка использования предметов
+     */
     private void jButtonUseItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         if(jRadioButtonSmallItem.isSelected()){
             nameButton="jRadioButtonSmallItem";
@@ -1198,15 +1216,22 @@ public class JFrames extends javax.swing.JFrame {
         jLabelHumanScaleHealth.setText(human.getHealth() + "/" + human.getMaxHealth());
         game.change.BagText(items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive);
     }//GEN-LAST:event_jButton9ActionPerformed
-
+    /**
+     * Кнопка получения списка доступных предметов
+     */
     private void jButtonGetItems(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         jDialogItems.setVisible(true);
         jDialogItems.setBounds(300, 200, 430, 350);
     }//GEN-LAST:event_jButton10ActionPerformed
-
+    /**
+     * Кнопка невозможности использования предмета
+     */
     private void jButtonCantUseItemOK(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         jDialogCantUseItem.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+    /**
+     * Кнопка выбора количества локаций в игре
+     */
     private void jButtonChoseLocationActionPerformed(java.awt.event.ActionEvent evt) {
         try{
             game.location = Integer.parseInt(jTextFieldCountLocation.getText());
@@ -1223,6 +1248,11 @@ public class JFrames extends javax.swing.JFrame {
         }
 
     }
+
+    /**
+     * Кнопка выбора бойца
+     * @param evt
+     */
     private void jButtonFighterActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             String name = buttonGroupFighter.getSelection().getActionCommand();
@@ -1250,11 +1280,6 @@ public class JFrames extends javax.swing.JFrame {
 
     }
 
-
-
-    /**
-     * @param args the command line arguments
-     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupItems;

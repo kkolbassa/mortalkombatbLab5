@@ -7,7 +7,7 @@ package org.example.enemyFabrics;
 import org.example.players.Player;
 
 /**
- *
+ * Класс для создания вражеского персонажа
  * @author Мария
  */
 public class EnemyFabric {
