@@ -23,7 +23,6 @@ public class JFrames extends javax.swing.JFrame {
     Human human = null;
     Player enemy = null;
     Items[] items = new Items[3];
-    String nameButton = "";
 
     
     /**
@@ -154,6 +153,10 @@ public class JFrames extends javax.swing.JFrame {
         this.jRadioButtonJhin.setActionCommand("Jhin");
         this.jRadioButtonKarina.setActionCommand("Karina");
         this.jRadioButtonRammus.setActionCommand("Rammus");
+
+        this.jRadioButtonSmallItem.setActionCommand("jRadioButtonSmallItem");
+        this.jRadioButtonBigItem.setActionCommand("jRadioButtonBigItem");
+        this.jRadioButtonCrossRelive.setActionCommand("jRadioButtonCrossRelive");
 
         jButtonAtack.setBackground(new java.awt.Color(255, 0, 0));
         jButtonAtack.setFont(new java.awt.Font("Comic Sans MS", 1, 12)); // NOI18N
@@ -1202,19 +1205,16 @@ public class JFrames extends javax.swing.JFrame {
      * Кнопка использования предметов
      */
     private void jButtonUseItem(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        if(jRadioButtonSmallItem.isSelected()){
-            nameButton="jRadioButtonSmallItem";
+        String nameButton;
+        try {
+            nameButton = buttonGroupItems.getSelection().getActionCommand();
+            game.action.UseItem(human, items, nameButton, jDialogCantUseItem, jDialogItems);
+            game.action.HP(human, jProgressBarHumanDamage);
+            jLabelHumanScaleHealth.setText(human.getHealth() + "/" + human.getMaxHealth());
+            game.change.BagText(items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive);
+        }catch (Exception e){
+            JOptionPane.showMessageDialog (null, "Предмет не выбран", "Oшибка", JOptionPane.ERROR_MESSAGE);
         }
-        if(jRadioButtonBigItem.isSelected()){
-            nameButton="jRadioButtonBigItem";
-        }
-        if(jRadioButtonCrossRelive.isSelected()){
-            nameButton="jRadioButtonCrossRelive";
-        }
-        game.action.UseItem(human, items, nameButton, jDialogCantUseItem, jDialogItems);
-        game.action.HP(human, jProgressBarHumanDamage);
-        jLabelHumanScaleHealth.setText(human.getHealth() + "/" + human.getMaxHealth());
-        game.change.BagText(items, jRadioButtonSmallItem, jRadioButtonBigItem, jRadioButtonCrossRelive);
     }//GEN-LAST:event_jButton9ActionPerformed
     /**
      * Кнопка получения списка доступных предметов
@@ -1235,7 +1235,7 @@ public class JFrames extends javax.swing.JFrame {
     private void jButtonChoseLocationActionPerformed(java.awt.event.ActionEvent evt) {
         try{
             game.location = Integer.parseInt(jTextFieldCountLocation.getText());
-            if(game.location<=0)throw new Exception();
+            if(game.location<=0||game.location>50)throw new Exception();
 
             jDialogChoseLocation.dispose();
 

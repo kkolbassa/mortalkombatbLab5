@@ -314,7 +314,7 @@ public class CharacterAction {
      */
     public void UseItem(Player human, Items[] items, String name, JDialog dialog, JDialog dialog1) {
         switch (name) {
-            case "jRadioButton1":
+            case "jRadioButtonSmallItem":
                 if (items[0].getCount() > 0) {
                     human.setHealth((int) (human.getMaxHealth() * 0.25));
                     items[0].setCount(-1);
@@ -323,7 +323,7 @@ public class CharacterAction {
                     dialog.setBounds(300, 200, 400, 300);
                 }
                 break;
-            case "jRadioButton2":
+            case "jRadioButtonBigItem":
                 if (items[1].getCount() > 0) {
                     human.setHealth((int) (human.getMaxHealth() * 0.5));
                     items[1].setCount(-1);
@@ -332,7 +332,7 @@ public class CharacterAction {
                     dialog.setBounds(300, 200, 400, 300);
                 }
                 break;
-            case "jRadioButton3":
+            case "jRadioButtonCrossRelive":
                 dialog.setVisible(true);
                 dialog.setBounds(300, 200, 400, 300);
                 break;
