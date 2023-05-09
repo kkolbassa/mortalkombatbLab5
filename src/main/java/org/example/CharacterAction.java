@@ -154,24 +154,52 @@ public class CharacterAction {
      * @return стратегия врага
      */
     private int[] ChooseOptimalBehavior(Player enemy, ArrayList<Integer> strategyPlayer, int step) {
-        int index;
+        int index = 0;
+        int limit = 0;
+        if(enemy instanceof SubZero) limit =2;
+        else if(enemy instanceof SonyaBlade) limit = 3;
+
         List<Integer> strategy = strategyPlayer.subList(strategyPlayer.size()-2,strategyPlayer.size());
-        if(step%2==1){
-            if(enemy instanceof SubZero){ index = 1;}
-            else if(strategy.get(0)!=strategy.get(1)&&random.nextInt(2)==0){
-                index = strategy.get(0) == 0 ? 3:0;
-            }else index = random.nextInt(2) == 0 ? 1: 2;
-        }else{
-            if (strategy.get(0)==0){
-                if(enemy instanceof SubZero) index = 1;
-                else index = random.nextInt(2) == 0 ? 1: 2;
-            }else {
-                if (enemy instanceof SonyaBlade) index = random.nextInt(2) == 0 ? 0 : 1;
+        switch (Integer.toString(strategy.get(0)) + Integer.toString(strategy.get(1))) {
+            case "00":
+                if(step%2==1){
+                    if(limit==2) index = random.nextInt(2) == 0 ? 1 : 3;
+                    else if(limit==3) index = random.nextInt(2) == 0 ? 1 : 2;
+                        else {
+                            if(random.nextBoolean())index = random.nextInt(2) == 0 ? 2 : 3;
+                            else index = random.nextInt(2) == 0 ? 2 : 1;
+                    }
+                }else if(limit==2) index = 3;
+                    else if(limit==3) index = 2;
+                        else index = random.nextInt(2) == 0 ? 3 : 2;
+                        break;
+            case "01":
+                    if(limit==2) index =0;
+                    else index = random.nextInt(2) == 0 ? 2 : 0;
+                break;
+            case "10":
+                if(step%2==1){
+                    if(limit==2) index = random.nextInt(2) == 0 ? 0 : 1;
+                    else {
+                        if(random.nextBoolean())index = random.nextInt(2) == 0 ? 2 : 0;
+                        else index = random.nextInt(2) == 0 ? 2 : 1;
+                    }
+                }else if(limit==3) index = random.nextInt(2) == 0 ? 0 : 1;
                 else {
-                    if(random.nextBoolean())index = random.nextInt(2) == 0 ? 1 : 3;
-                    else index = random.nextInt(2) == 0 ? 0 : 3;
+                    if(random.nextBoolean())index = random.nextInt(2) == 0 ? 3 : 0;
+                    else index = random.nextInt(2) == 0 ? 3 : 1;
                 }
-            }
+                break;
+            case"11":
+                if(step%2==1){
+                    if(limit==2) index = 1;
+                    else index = random.nextInt(2) == 0 ? 2 : 1;
+                }else if(limit==3) index = random.nextInt(2) == 0 ? 0 : 1;
+                    else {
+                        if(random.nextBoolean())index = random.nextInt(2) == 0 ? 3 : 0;
+                        else index = random.nextInt(2) == 0 ? 3 : 1;
+                    }
+                break;
         }
         return kind_fight[index];
     }
